@@ -89,6 +89,11 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
         ...state,
         numIceCreams: state.numIceCreams + action.payload,
       };
+    case CAKE_ORDERED:
+      return {
+        ...state,
+        numIceCreams: (state.numIceCreams -= 1),
+      };
     default:
       return state;
   }
@@ -100,22 +105,16 @@ const rootReducer = combineReducers({
 });
 
 const store = createStore(rootReducer, applyMiddleware(logger));
-console.log('Initial state: ', store.getState());
+console.log('Initial state: ', store.getState(), '\n');
 
-const unsubscribe = store.subscribe(
-  () => {}
-  // console.log('updated state: ', store.getState())
-);
+const unsubscribe = store.subscribe(() => {});
 
-// Dispatch an Action
+// Dispatch an Action using store
 // store.dispatch(orderCake());
-// store.dispatch(orderCake());
-// store.dispatch(orderCake());
-// store.dispatch(restockCake(3));
 
 /**
- * bindActionCreators is no longer really used according to this tutorial.
- * It was used back in the day.
+ * bindActionCreators is no longer used.
+ * It was used back in the day, when
  * Actions were passed as props to components.
  */
 const actions = bindActionCreators(
@@ -124,9 +123,5 @@ const actions = bindActionCreators(
 );
 
 actions.orderCake();
-actions.restockCake(20);
-
-// actions.orderIceCream();
-// actions.restockIceCream(20);
 
 unsubscribe();
